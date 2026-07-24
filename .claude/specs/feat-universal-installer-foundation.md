@@ -135,3 +135,14 @@ Um `E404` em pacote com escopo não confirma permissão para publicar no namespa
 Referência oficial consultada em 2026-07-24:
 - `AGENTS.md`: https://learn.chatgpt.com/docs/agent-configuration/agents-md
 - Skills: https://learn.chatgpt.com/docs/build-skills
+
+## Hardening pós-review do PR #1
+
+O PR #1 foi mesclado antes da chegada de quatro comentários do Copilot. Correções
+abertas em branch complementar:
+
+- [x] Bloquear `.envrc` e qualquer basename iniciado por `.env`.
+- [x] Validar todos os destinos antes de criar estado transacional ou escrever.
+- [x] Tipar `operations` explicitamente como `CopyOperation[]`.
+- [x] Restaurar `language: pt-br` no front matter de `MEMORY.md`.
+- [ ] Validar CI multiplataforma do PR complementar.

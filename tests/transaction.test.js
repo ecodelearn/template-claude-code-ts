@@ -147,6 +147,7 @@ test("excludes local memory, secrets and private keys from recursive copies", as
   fs.writeFileSync(path.join(harness, "AGENTS.md"), "safe");
   fs.writeFileSync(path.join(harness, "settings.local.json"), "secret");
   fs.writeFileSync(path.join(harness, ".env"), "secret");
+  fs.writeFileSync(path.join(harness, ".envrc"), "secret");
   fs.writeFileSync(path.join(harness, "private.pem"), "secret");
   fs.writeFileSync(path.join(harness, "agent-memory-local", "session.md"), "secret");
 
@@ -161,6 +162,7 @@ test("excludes local memory, secrets and private keys from recursive copies", as
   for (const excluded of [
     "settings.local.json",
     ".env",
+    ".envrc",
     "private.pem",
     path.join("agent-memory-local", "session.md"),
   ]) {
@@ -178,4 +180,28 @@ test("excludes local memory, secrets and private keys from recursive copies", as
     ),
     /Fonte sensivel bloqueada/,
   );
+});
+
+test("validates every destination before creating transaction state", async (t) => {
+  const dirs = fixture();
+  t.after(() => fs.rmSync(dirs.root, { recursive: true, force: true }));
+  fs.writeFileSync(path.join(dirs.source, "first"), "new");
+  fs.writeFileSync(path.join(dirs.source, "second"), "escape");
+  fs.writeFileSync(path.join(dirs.target, "first"), "original");
+
+  await assert.rejects(
+    executeTransaction(
+      dirs.state,
+      dirs.target,
+      [
+        { sourcePath: path.join(dirs.source, "first"), destination: "first" },
+        { sourcePath: path.join(dirs.source, "second"), destination: "../escape" },
+      ],
+      { id: "test-upfront-validation" },
+    ),
+    /fora do projeto/,
+  );
+
+  assert.equal(fs.readFileSync(path.join(dirs.target, "first"), "utf8"), "original");
+  assert.equal(fs.existsSync(path.join(dirs.state, "adopt-cli")), false);
 });

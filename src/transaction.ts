@@ -75,8 +75,7 @@ export function isSensitiveSourcePath(sourceRoot: string, candidate: string): bo
   return segments.includes("agent-memory-local")
     || segments.includes(".git")
     || basename === "README_MCP.md"
-    || basename === ".env"
-    || basename.startsWith(".env.")
+    || basename.startsWith(".env")
     || basename.includes(".local.")
     || basename.endsWith(".local")
     || /\.(pem|key|p12|pfx)$/i.test(basename);
@@ -166,6 +165,13 @@ export async function executeTransaction(
   operations: CopyOperation[],
   options: TransactionOptions = {},
 ): Promise<TransactionManifest> {
+  for (const operation of operations) {
+    if (isSensitiveSourcePath(operation.sourcePath, operation.sourcePath)) {
+      throw new Error(`Fonte sensivel bloqueada: ${path.basename(operation.sourcePath)}`);
+    }
+    safeDestination(targetDir, operation.destination);
+  }
+
   const id = options.id ?? createTransactionId();
   const transactionDir = transactionPath(stateDir, id);
   const backupDir = path.join(transactionDir, "backup");
@@ -181,9 +187,6 @@ export async function executeTransaction(
 
   try {
     for (const operation of operations) {
-      if (isSensitiveSourcePath(operation.sourcePath, operation.sourcePath)) {
-        throw new Error(`Fonte sensivel bloqueada: ${path.basename(operation.sourcePath)}`);
-      }
       const targetPath = safeDestination(targetDir, operation.destination);
       if (existsSync(targetPath)) {
         const backupPath = safeDestination(backupDir, operation.destination);

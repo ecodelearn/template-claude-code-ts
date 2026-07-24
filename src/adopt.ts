@@ -8,6 +8,7 @@ import { createLogger } from "./logger";
 import { planCopyRules } from "./planner";
 import { getProvider, listProviders } from "./providers";
 import {
+  type CopyOperation,
   executeTransaction,
   forgetTransaction,
   listTransactions,
@@ -272,7 +273,7 @@ async function applyProvider(
   logger.info(`Template: ${sourceDir}`);
   logger.info(`Destino: ${targetDir}`);
 
-  const operations = [];
+  const operations: CopyOperation[] = [];
   for (const item of planCopyRules(provider.copyRules, sourceDir, targetDir)) {
     if (item.action === "missing") {
       if (item.rule.required) {

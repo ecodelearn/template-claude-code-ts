@@ -2,6 +2,7 @@
 project: template-claude-code-ts
 repo: ecodelearn/template-claude-code-ts
 stack: TypeScript, Node.js, npm
+language: pt-br
 ---
 
 # Template Claude Code TS — Memória do Projeto
