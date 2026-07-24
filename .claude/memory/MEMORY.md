@@ -33,10 +33,9 @@ Aberta a spec `feat-universal-installer-foundation`; planejador, `--dry-run`,
 backup/rollback transacional, fontes fixadas e providers Claude/Codex/Gemini foram
 implementados e testados. A cópia bloqueia memória local, `.env*`, chaves e
 configurações locais. O pacote npm foi reduzido a 13 entradas por allowlist e segue
-com `private: true`. Uma matriz CI para Linux/macOS/Windows e testes de integração
-portáveis foram criados, mas ainda não executados no GitHub. Próxima etapa é rodar
-a primeira matriz. O nome npm escolhido é `@ecodelearn/agent-harness`; publicação
-continua bloqueada.
+com `private: true`. A matriz CI passou em Linux, macOS e Windows no PR #1, junto
+com GitGuardian. O nome npm escolhido é `@ecodelearn/agent-harness`; publicação
+continua bloqueada. Próxima etapa é revisar o PR e planejar o rollout npm.
 
 ## Integrações ativas
 

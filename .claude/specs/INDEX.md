@@ -10,7 +10,7 @@
 
 | Spec | Slug | Próximo passo imediato | Responsável |
 |------|------|------------------------|-------------|
-| [feat-universal-installer-foundation](feat-universal-installer-foundation.md) | `template-claude-code-ts::feat-universal-installer-foundation` | Executar matriz CI e revisar o PR | — |
+| [feat-universal-installer-foundation](feat-universal-installer-foundation.md) | `template-claude-code-ts::feat-universal-installer-foundation` | Revisar o PR #1 e planejar rollout npm | — |
 | [chore-sync-template-ecosystem](chore-sync-template-ecosystem.md) | `template-claude-code-ts::chore-sync-template-ecosystem` | Decidir se `git-commit-formatter`/`license-header-adder` viram universais | — |
 
 ---

@@ -86,7 +86,7 @@ as diferenças que dependem do canal de instalação.
 - [x] Adicionar listagem e exclusão explícita de backups.
 - [x] Criar teste de integração sem dependência de Bash.
 - [x] Criar matriz CI para Linux, macOS e Windows com Actions fixadas por SHA.
-- [ ] Executar e validar a primeira matriz CI no GitHub.
+- [x] Executar e validar a primeira matriz CI no GitHub.
 - [x] Definir nome público: `@ecodelearn/agent-harness`.
 - [ ] Validar acesso ao escopo npm e preparar publicação via `npx`.
 
@@ -114,8 +114,8 @@ Em 2026-07-24 foi adicionada a matriz GitHub Actions:
 
 O teste de integração em Node puro cobre instalação Codex, exclusão de arquivos
 locais sensíveis, listagem da transação, rollback, remoção do backup e `dry-run`.
-Localmente, as 5 suítes passaram. A execução real em macOS/Windows permanece
-pendente até o workflow ser enviado ao GitHub.
+Localmente, as 5 suítes passaram. No PR #1, a matriz passou em Ubuntu com Node
+20/22, macOS com Node 20 e Windows com Node 20; GitGuardian também passou.
 
 ## Candidatos de nome npm
 
