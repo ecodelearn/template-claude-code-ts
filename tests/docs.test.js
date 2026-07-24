@@ -40,6 +40,13 @@ test("does not present the unpublished npm package as available", () => {
   }
 });
 
+test("validates the supported Node releases and Node 24 in CI", () => {
+  const workflow = fs.readFileSync(path.join(root, ".github", "workflows", "ci.yml"), "utf8");
+  for (const version of [20, 22, 24]) {
+    assert.match(workflow, new RegExp(`node: ${version}`));
+  }
+});
+
 test("new public Markdown documents do not contain broken relative links", () => {
   const files = [
     "README.md",

@@ -13,6 +13,7 @@ test("keeps publication disabled and package contents allowlisted", () => {
     "README.en.md",
     "CONTRIBUTING.md",
     "SECURITY.md",
+    "CODE_OF_CONDUCT.md",
     "LICENSE",
   ]);
   assert.equal(packageJson.scripts.prepack, "npm run build");

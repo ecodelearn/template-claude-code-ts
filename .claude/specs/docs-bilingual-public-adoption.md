@@ -1,6 +1,6 @@
 # Spec: Documentação bilíngue para adoção pública
 
-**Status:** `completed`
+**Status:** `in-progress`
 **Slug:** `template-claude-code-ts::docs-bilingual-public-adoption`
 **Criado em:** 2026-07-24
 **Última atualização:** 2026-07-24
@@ -30,7 +30,7 @@ do futuro pacote `@ecodelearn/agent-harness`.
 - [x] Arquitetura e modelo de segurança.
 - [x] `CONTRIBUTING.md`, `SECURITY.md`, código de conduta, template de PR e issues.
 - [x] Teste automático de presença, paridade estrutural e links relativos.
-- [x] CI atualizada para Actions com runtime Node 24.
+- [x] CI atualizada para Actions com runtime Node 24 e testes do projeto em Node 20, 22 e 24.
 - [x] Validar CI multiplataforma e review no PR.
 
 ## Fora do escopo
@@ -52,5 +52,6 @@ do futuro pacote `@ecodelearn/agent-harness`.
 Em 2026-07-24 foram criados seis pares de guias, landing pages bilíngues e arquivos
 de comunidade. O pacote auditado contém apenas runtime e documentação pública
 bilíngue (27 entradas), sem specs/memória internas. A visibilidade do repositório
-não foi alterada. O PR draft #3 passou em Ubuntu (Node 20 e 22), macOS, Windows e
-GitGuardian; não havia comentários ou threads de review pendentes na validação.
+não foi alterada. Após o review do Copilot, a matriz passou a validar também o
+projeto em Node 24 e `CODE_OF_CONDUCT.md` entrou na allowlist do pacote. A
+validação local passou; falta confirmar a nova matriz no PR #3.
