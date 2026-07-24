@@ -116,6 +116,8 @@ O teste de integração em Node puro cobre instalação Codex, exclusão de arqu
 locais sensíveis, listagem da transação, rollback, remoção do backup e `dry-run`.
 Localmente, as 5 suítes passaram. No PR #1, a matriz passou em Ubuntu com Node
 20/22, macOS com Node 20 e Windows com Node 20; GitGuardian também passou.
+Após a primeira execução duplicada, o gatilho foi otimizado: `pull_request` valida
+branches e `push` executa somente em `master`.
 
 ## Candidatos de nome npm
 

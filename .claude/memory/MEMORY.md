@@ -35,7 +35,8 @@ implementados e testados. A cópia bloqueia memória local, `.env*`, chaves e
 configurações locais. O pacote npm foi reduzido a 13 entradas por allowlist e segue
 com `private: true`. A matriz CI passou em Linux, macOS e Windows no PR #1, junto
 com GitGuardian. O nome npm escolhido é `@ecodelearn/agent-harness`; publicação
-continua bloqueada. Próxima etapa é revisar o PR e planejar o rollout npm.
+continua bloqueada. O workflow evita execuções duplicadas: PRs validam branches e
+push valida apenas `master`. Próxima etapa é revisar o PR e planejar o rollout npm.
 
 ## Integrações ativas
 
