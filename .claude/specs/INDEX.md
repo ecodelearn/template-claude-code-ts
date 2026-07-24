@@ -10,7 +10,6 @@
 
 | Spec | Slug | Próximo passo imediato | Responsável |
 |------|------|------------------------|-------------|
-| [docs-bilingual-public-adoption](docs-bilingual-public-adoption.md) | `template-claude-code-ts::docs-bilingual-public-adoption` | Confirmar matriz com Node 24 após review | — |
 | [feat-universal-installer-foundation](feat-universal-installer-foundation.md) | `template-claude-code-ts::feat-universal-installer-foundation` | Planejar rollout npm após documentação | — |
 | [chore-sync-template-ecosystem](chore-sync-template-ecosystem.md) | `template-claude-code-ts::chore-sync-template-ecosystem` | Decidir se `git-commit-formatter`/`license-header-adder` viram universais | — |
 
@@ -35,3 +34,4 @@
 
 | Spec | Slug | Concluída em | PR |
 |------|------|--------------|----|
+| [docs-bilingual-public-adoption](docs-bilingual-public-adoption.md) | `template-claude-code-ts::docs-bilingual-public-adoption` | 2026-07-24 | #3 |

@@ -1,6 +1,6 @@
 # Spec: Documentação bilíngue para adoção pública
 
-**Status:** `in-progress`
+**Status:** `completed`
 **Slug:** `template-claude-code-ts::docs-bilingual-public-adoption`
 **Criado em:** 2026-07-24
 **Última atualização:** 2026-07-24
@@ -54,4 +54,5 @@ de comunidade. O pacote auditado contém apenas runtime e documentação públic
 bilíngue (27 entradas), sem specs/memória internas. A visibilidade do repositório
 não foi alterada. Após o review do Copilot, a matriz passou a validar também o
 projeto em Node 24 e `CODE_OF_CONDUCT.md` entrou na allowlist do pacote. A
-validação local passou; falta confirmar a nova matriz no PR #3.
+validação local e a nova matriz do PR #3 passaram em Node 20, 22 e 24, macOS,
+Windows e GitGuardian.
