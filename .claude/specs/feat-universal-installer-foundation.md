@@ -145,4 +145,4 @@ abertas em branch complementar:
 - [x] Validar todos os destinos antes de criar estado transacional ou escrever.
 - [x] Tipar `operations` explicitamente como `CopyOperation[]`.
 - [x] Restaurar `language: pt-br` no front matter de `MEMORY.md`.
-- [ ] Validar CI multiplataforma do PR complementar.
+- [x] Validar CI multiplataforma do PR complementar #2.
