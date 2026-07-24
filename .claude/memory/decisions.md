@@ -15,6 +15,19 @@ FORMATO DE ENTRADA:
 
 <!-- Adicione entradas aqui -->
 
+## Documentação pública sempre em PT-BR e inglês — 2026-07-24
+**Contexto:** O Agent Harness pretende ser adotado fora do ambiente pessoal, por
+usuários de diferentes agentes e sistemas operacionais.
+**Decisão:** Landing pages e guias públicos canônicos devem existir em pares
+`docs/pt-BR` e `docs/en`. Mudanças de comportamento público só estão completas
+quando ambos os idiomas e os testes de paridade/links forem atualizados.
+**Alternativas descartadas:** documentação apenas em português; tradução automática
+sem revisão; um único arquivo longo intercalando idiomas.
+**Consequências:** todo PR público tem custo de manutenção bilíngue, mas navegação,
+contribuição e adoção ficam previsíveis. Documentos internos de memória/spec não
+precisam ser traduzidos.
+**Status:** ativa
+
 ## Provider Codex sem configuração ou MCP automático — 2026-07-24
 **Contexto:** A documentação oficial atual diferencia orientação persistente em
 `AGENTS.md`, skills de repositório em `.agents/skills` e configuração confiável em

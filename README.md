@@ -1,6 +1,24 @@
 # Agent Harness
 
-Template base para projetos com Claude Code e Gemini CLI. Estrutura pronta com memória persistente, gestão de specs por feature, skills com `/slash-commands`, agents isolados, regras por caminho de arquivo e hooks de segurança — para uso solo ou em times remotos.
+[Português do Brasil](README.md) · [English](README.en.md)
+
+> **Estado:** o pacote `@ecodelearn/agent-harness` continua com `private: true` e
+> ainda não está disponível via `npx`. Use o checkout do repositório conforme o
+> [guia de início](docs/pt-BR/getting-started.md).
+
+Documentação canônica em português:
+
+- [Instalação e primeiro uso](docs/pt-BR/getting-started.md)
+- [Projeto novo](docs/pt-BR/new-project.md)
+- [Adoção de projeto existente](docs/pt-BR/existing-project.md)
+- [Referência do CLI](docs/pt-BR/cli-reference.md)
+- [Providers](docs/pt-BR/providers.md)
+- [Arquitetura e segurança](docs/pt-BR/architecture-security.md)
+- [Como contribuir](CONTRIBUTING.md) · [Segurança](SECURITY.md)
+
+Instalador transacional de um workflow compartilhado para Claude Code, Codex e
+Gemini CLI. Inclui memória persistente, specs por feature, skills reutilizáveis,
+regras por caminho e mecanismos de segurança para uso individual ou em equipe.
 
 ## O problema que este template resolve
 

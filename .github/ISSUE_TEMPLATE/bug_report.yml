@@ -1,0 +1,59 @@
+name: Bug report / Relato de bug
+description: Report a reproducible problem / Relate um problema reproduzível
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include secrets or private data.
+        Não inclua segredos ou dados privados.
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language / Idioma
+      options:
+        - English
+        - Português do Brasil
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Commit or version / Commit ou versão
+    validations:
+      required: true
+  - type: dropdown
+    id: provider
+    attributes:
+      label: Provider
+      options:
+        - Claude
+        - Codex
+        - Gemini
+        - CLI / transactions
+        - Documentation
+        - Other / Outro
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction / Reprodução
+      description: Minimal steps without secrets / Passos mínimos sem segredos
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior / Comportamento esperado
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment / Ambiente
+      description: OS, Node.js, Git and agent versions
+    validations:
+      required: true

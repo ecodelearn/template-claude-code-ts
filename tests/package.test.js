@@ -8,7 +8,11 @@ test("keeps publication disabled and package contents allowlisted", () => {
   assert.equal(packageJson.private, true);
   assert.deepEqual(packageJson.files, [
     "dist/",
-    "docs/universal-adopt.md",
+    "docs/en/",
+    "docs/pt-BR/",
+    "README.en.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
     "LICENSE",
   ]);
   assert.equal(packageJson.scripts.prepack, "npm run build");

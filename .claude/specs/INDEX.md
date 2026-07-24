@@ -10,7 +10,8 @@
 
 | Spec | Slug | Próximo passo imediato | Responsável |
 |------|------|------------------------|-------------|
-| [feat-universal-installer-foundation](feat-universal-installer-foundation.md) | `template-claude-code-ts::feat-universal-installer-foundation` | Validar hardening pós-review em PR complementar | — |
+| [docs-bilingual-public-adoption](docs-bilingual-public-adoption.md) | `template-claude-code-ts::docs-bilingual-public-adoption` | Validar CI e review do PR documental | — |
+| [feat-universal-installer-foundation](feat-universal-installer-foundation.md) | `template-claude-code-ts::feat-universal-installer-foundation` | Planejar rollout npm após documentação | — |
 | [chore-sync-template-ecosystem](chore-sync-template-ecosystem.md) | `template-claude-code-ts::chore-sync-template-ecosystem` | Decidir se `git-commit-formatter`/`license-header-adder` viram universais | — |
 
 ---
