@@ -1,11 +1,18 @@
 #!/usr/bin/env node
-import { cpSync, existsSync, mkdtempSync, rmSync, statSync } from "node:fs";
+import { existsSync, mkdtempSync, rmSync, statSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import readline from "node:readline/promises";
 import { spawnSync } from "node:child_process";
 import { createLogger } from "./logger";
+import { planCopyRules } from "./planner";
 import { getProvider, listProviders } from "./providers";
+import {
+  executeTransaction,
+  forgetTransaction,
+  listTransactions,
+  rollbackTransaction,
+} from "./transaction";
 import { ToolProvider } from "./types";
 
 interface Args {
@@ -13,17 +20,30 @@ interface Args {
   source?: string;
   target: string;
   yes: boolean;
+  dryRun: boolean;
+  ref?: string;
+  rollback?: string;
+  forget?: string;
+  listTransactions: boolean;
 }
 
 function printHelp(): void {
-  process.stdout.write(`adopt-cli\n\n`);
+  process.stdout.write(`agent-harness\n\n`);
   process.stdout.write(`Uso:\n`);
-  process.stdout.write(`  adopt --tool <nome> [--source <repo-ou-caminho>] [--target <dir>] [--yes]\n\n`);
+  process.stdout.write(`  agent-harness --tool <nome> [--source <repo-ou-caminho>] [--ref <tag-ou-commit>] [--target <dir>] [--yes] [--dry-run]\n`);
+  process.stdout.write(`  agent-harness --target <dir> --rollback <id>\n\n`);
+  process.stdout.write(`  agent-harness --target <dir> --list-transactions\n`);
+  process.stdout.write(`  agent-harness --target <dir> --forget <id> [--yes]\n\n`);
   process.stdout.write(`Opcoes:\n`);
   process.stdout.write(`  --tool     Nome do provider (ex.: claude)\n`);
   process.stdout.write(`  --source   Repositorio git (owner/repo, URL) ou caminho local\n`);
+  process.stdout.write(`  --ref      Tag ou commit da fonte remota\n`);
   process.stdout.write(`  --target   Diretorio de destino (padrao: diretorio atual)\n`);
   process.stdout.write(`  --yes      Nao perguntar confirmacoes\n`);
+  process.stdout.write(`  --dry-run  Exibe o plano sem alterar o projeto\n`);
+  process.stdout.write(`  --rollback Restaura uma transacao pelo ID\n`);
+  process.stdout.write(`  --list-transactions Lista backups deste projeto\n`);
+  process.stdout.write(`  --forget   Exclui definitivamente um backup pelo ID\n`);
   process.stdout.write(`  --help     Exibe ajuda\n\n`);
   process.stdout.write(`Providers disponiveis: ${listProviders().join(", ")}\n`);
 }
@@ -33,6 +53,8 @@ function parseArgs(argv: string[]): Args {
     tool: "claude",
     target: process.cwd(),
     yes: false,
+    dryRun: false,
+    listTransactions: false,
   };
 
   for (let i = 0; i < argv.length; i += 1) {
@@ -45,6 +67,16 @@ function parseArgs(argv: string[]): Args {
 
     if (current === "--yes") {
       args.yes = true;
+      continue;
+    }
+
+    if (current === "--dry-run") {
+      args.dryRun = true;
+      continue;
+    }
+
+    if (current === "--list-transactions") {
+      args.listTransactions = true;
       continue;
     }
 
@@ -64,6 +96,22 @@ function parseArgs(argv: string[]): Args {
         throw new Error(`Valor ausente para ${current}`);
       }
       args.source = nextValue;
+      i += 1;
+      continue;
+    }
+
+    if (current === "--ref" || current === "--rollback" || current === "--forget") {
+      const nextValue = argv[i + 1];
+      if (!nextValue) {
+        throw new Error(`Valor ausente para ${current}`);
+      }
+      if (current === "--ref") {
+        args.ref = nextValue;
+      } else if (current === "--rollback") {
+        args.rollback = nextValue;
+      } else {
+        args.forget = nextValue;
+      }
       i += 1;
       continue;
     }
@@ -96,6 +144,16 @@ function ensureGitRepo(targetDir: string): void {
   }
 }
 
+function resolveGitStateDir(targetDir: string): string {
+  const result = spawnSync("git", ["-C", targetDir, "rev-parse", "--absolute-git-dir"], {
+    encoding: "utf8",
+  });
+  if (result.status !== 0) {
+    throw new Error(`Nao foi possivel localizar o diretorio Git de ${targetDir}`);
+  }
+  return result.stdout.trim();
+}
+
 function expandHome(input: string): string {
   if (input === "~") {
     return os.homedir();
@@ -126,8 +184,11 @@ function normalizeRepoSource(source: string): string {
   return source;
 }
 
-function fetchSource(source: string, logger: ReturnType<typeof createLogger>): { dir: string; cleanup: () => void } {
+function fetchSource(source: string, ref: string | undefined, logger: ReturnType<typeof createLogger>): { dir: string; cleanup: () => void } {
   if (isLocalPath(source)) {
+    if (ref) {
+      throw new Error("Nao use --ref com uma fonte local; o working tree local e usado como esta.");
+    }
     const fullPath = path.resolve(expandHome(source));
     if (!existsSync(fullPath)) {
       throw new Error(`Template local nao encontrado: ${fullPath}`);
@@ -138,6 +199,10 @@ function fetchSource(source: string, logger: ReturnType<typeof createLogger>): {
 
   const tempDir = mkdtempSync(path.join(os.tmpdir(), "adopt-cli-"));
   const repo = normalizeRepoSource(source);
+  if (!ref) {
+    rmSync(tempDir, { recursive: true, force: true });
+    throw new Error("Fontes remotas exigem --ref <tag-ou-commit> para uma instalacao reproduzivel.");
+  }
 
   const gitAvailable = spawnSync("git", ["--version"], { stdio: "ignore" }).status === 0;
   if (!gitAvailable) {
@@ -145,15 +210,23 @@ function fetchSource(source: string, logger: ReturnType<typeof createLogger>): {
     throw new Error("Git nao encontrado. Instale o git para clonar templates remotos.");
   }
 
-  logger.info(`Clonando template: ${repo}`);
-  const result = spawnSync("git", ["clone", repo, tempDir, "--depth=1", "--quiet"], {
+  logger.info(`Obtendo template: ${repo} @ ${ref}`);
+  const commands = [
+    ["init", "--quiet", tempDir],
+    ["-C", tempDir, "remote", "add", "origin", repo],
+    ["-C", tempDir, "fetch", "--depth=1", "--quiet", "origin", ref],
+    ["-C", tempDir, "checkout", "--detach", "--quiet", "FETCH_HEAD"],
+  ];
+  const failed = commands.some((command) => spawnSync("git", command, {
     stdio: "inherit",
-  });
-
-  if (result.status !== 0) {
+    timeout: 60_000,
+  }).status !== 0);
+  if (failed) {
     rmSync(tempDir, { recursive: true, force: true });
-    throw new Error(`Falha ao clonar template: ${repo}`);
+    throw new Error(`Falha ao obter template versionado: ${repo} @ ${ref}`);
   }
+  const resolved = spawnSync("git", ["-C", tempDir, "rev-parse", "HEAD"], { encoding: "utf8" }).stdout.trim();
+  logger.info(`Commit resolvido: ${resolved}`);
 
   return {
     dir: tempDir,
@@ -176,57 +249,65 @@ async function shouldOverwrite(target: string, yes: boolean): Promise<boolean> {
   return answer.trim().toLowerCase() === "s";
 }
 
-async function applyProvider(provider: ToolProvider, sourceDir: string, targetDir: string, yes: boolean): Promise<void> {
+async function shouldForget(id: string, yes: boolean): Promise<boolean> {
+  if (yes) {
+    return true;
+  }
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  const answer = await rl.question(`Excluir definitivamente o backup ${id}? [s/N] `);
+  rl.close();
+  return answer.trim().toLowerCase() === "s";
+}
+
+async function applyProvider(
+  provider: ToolProvider,
+  sourceDir: string,
+  targetDir: string,
+  stateDir: string,
+  yes: boolean,
+): Promise<void> {
   const logger = createLogger();
 
   logger.info(`Provider: ${provider.name}`);
   logger.info(`Template: ${sourceDir}`);
   logger.info(`Destino: ${targetDir}`);
 
-  for (const rule of provider.copyRules) {
-    const sourcePath = path.join(sourceDir, rule.source);
-    const targetPath = path.join(targetDir, rule.destination);
-
-    if (!existsSync(sourcePath)) {
-      if (rule.required) {
-        logger.error(`Arquivo/diretorio obrigatorio nao encontrado no template: ${rule.source}`);
+  const operations = [];
+  for (const item of planCopyRules(provider.copyRules, sourceDir, targetDir)) {
+    if (item.action === "missing") {
+      if (item.rule.required) {
+        throw new Error(`Arquivo/diretorio obrigatorio nao encontrado no template: ${item.rule.source}`);
       }
       continue;
     }
-
-    const targetExists = existsSync(targetPath);
-
-    if (rule.overwrite === "never" && targetExists) {
-      logger.warn(`${rule.destination} ja existe. Mantendo arquivo existente.`);
+    if (item.action === "preserve") {
+      logger.warn(`${item.rule.destination} ja existe. Mantendo arquivo existente.`);
       continue;
     }
-
-    if (rule.overwrite === "always" && targetExists) {
-      rmSync(targetPath, { recursive: true, force: true });
-    }
-
-    if (rule.overwrite === "prompt" && targetExists) {
-      const allowed = await shouldOverwrite(rule.destination, yes);
+    if (item.action === "prompt") {
+      const allowed = await shouldOverwrite(item.rule.destination, yes);
       if (!allowed) {
-        logger.warn(`Copia de ${rule.destination} cancelada.`);
+        logger.warn(`Copia de ${item.rule.destination} cancelada.`);
         continue;
       }
-      rmSync(targetPath, { recursive: true, force: true });
     }
-
-    cpSync(sourcePath, targetPath, { recursive: true });
-    logger.ok(`${rule.destination} copiado`);
+    operations.push({ sourcePath: item.sourcePath, destination: item.rule.destination });
   }
 
-  await provider.afterCopy?.({
-    sourceDir,
-    targetDir,
-    yes,
-    logger,
+  const manifest = await executeTransaction(stateDir, targetDir, operations, {
+    afterApply: async () => provider.afterCopy?.({
+      sourceDir,
+      targetDir,
+      yes,
+      logger,
+    }),
   });
+  operations.forEach((operation) => logger.ok(`${operation.destination} copiado`));
 
   process.stdout.write("\n");
   logger.ok(`Estrutura ${provider.name} adicionada ao projeto.`);
+  logger.info(`Transacao: ${manifest.id}`);
+  logger.info(`Rollback: agent-harness --target "${targetDir}" --rollback ${manifest.id}`);
 
   if (provider.nextSteps && provider.nextSteps.length > 0) {
     process.stdout.write("\nProximos passos:\n");
@@ -234,6 +315,24 @@ async function applyProvider(provider: ToolProvider, sourceDir: string, targetDi
       process.stdout.write(`${index + 1}. ${step}\n`);
     });
   }
+}
+
+function printPlan(provider: ToolProvider, sourceDir: string, targetDir: string): void {
+  const logger = createLogger();
+  const labels = {
+    copy: "COPIAR",
+    overwrite: "SOBRESCREVER",
+    prompt: "PERGUNTAR",
+    preserve: "PRESERVAR",
+    missing: "AUSENTE",
+  } as const;
+
+  logger.info(`Previa do provider: ${provider.name}`);
+  for (const item of planCopyRules(provider.copyRules, sourceDir, targetDir)) {
+    const required = item.action === "missing" && item.rule.required ? " (obrigatorio)" : "";
+    process.stdout.write(`[${labels[item.action]}] ${item.rule.source} -> ${item.rule.destination}${required}\n`);
+  }
+  process.stdout.write("\nNenhum arquivo foi alterado.\n");
 }
 
 async function main(): Promise<void> {
@@ -248,15 +347,50 @@ async function main(): Promise<void> {
     }
 
     ensureGitRepo(args.target);
+    const stateDir = resolveGitStateDir(args.target);
+
+    if (args.rollback) {
+      const manifest = rollbackTransaction(stateDir, args.target, args.rollback);
+      logger.ok(`Transacao ${manifest.id} restaurada.`);
+      return;
+    }
+
+    if (args.listTransactions) {
+      const transactions = listTransactions(stateDir, args.target);
+      if (transactions.length === 0) {
+        logger.info("Nenhuma transacao encontrada para este projeto.");
+        return;
+      }
+      transactions.forEach((transaction) => {
+        const status = transaction.rolledBackAt ? "restaurada" : "aplicada";
+        process.stdout.write(`${transaction.id}\t${status}\n`);
+      });
+      return;
+    }
+
+    if (args.forget) {
+      if (!await shouldForget(args.forget, args.yes)) {
+        logger.warn("Exclusao cancelada.");
+        return;
+      }
+      forgetTransaction(stateDir, args.target, args.forget);
+      logger.ok(`Backup ${args.forget} excluido definitivamente.`);
+      return;
+    }
 
     const source = args.source ?? provider.defaultSource;
     if (!source) {
       throw new Error(`Provider ${provider.name} nao definiu fonte padrao. Use --source.`);
     }
 
-    const fetched = fetchSource(source, logger);
+    const ref = args.ref ?? (args.source ? undefined : provider.defaultRef);
+    const fetched = fetchSource(source, ref, logger);
     try {
-      await applyProvider(provider, fetched.dir, args.target, args.yes);
+      if (args.dryRun) {
+        printPlan(provider, fetched.dir, args.target);
+      } else {
+        await applyProvider(provider, fetched.dir, args.target, stateDir, args.yes);
+      }
     } finally {
       fetched.cleanup();
     }

@@ -1,14 +1,22 @@
 {
-  "name": "template-claude-code-ts",
+  "name": "@ecodelearn/agent-harness",
   "version": "1.0.0",
   "private": true,
+  "license": "WTFPL",
   "description": "Universal adopter CLI for code assistant templates.",
   "type": "commonjs",
+  "files": [
+    "dist/",
+    "docs/universal-adopt.md",
+    "LICENSE"
+  ],
   "bin": {
-    "adopt": "dist/adopt.js"
+    "agent-harness": "dist/adopt.js"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "prepack": "npm run build",
+    "test": "npm run build && node --test --test-concurrency=1",
     "start": "node dist/adopt.js",
     "adopt": "npm run build && node dist/adopt.js",
     "adopt:win": "powershell -ExecutionPolicy Bypass -File ./adopt.ps1",
@@ -18,5 +26,12 @@
   "devDependencies": {
     "@types/node": "^22.13.10",
     "typescript": "^5.8.2"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ecodelearn/template-claude-code-ts.git"
   }
 }

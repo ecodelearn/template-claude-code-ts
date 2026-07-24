@@ -4,7 +4,8 @@ import { ToolProvider } from "../types";
 
 export const claudeProvider: ToolProvider = {
   name: "claude",
-  defaultSource: "ecodelearn/template-claude-code-ts",
+  defaultSource: "ecodelearn/template-claude-code-open",
+  defaultRef: "758fc59ac15fddcd459f3dc2c212f57e36cbd6bd",
   copyRules: [
     {
       source: ".claude",

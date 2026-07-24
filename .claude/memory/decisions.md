@@ -15,6 +15,54 @@ FORMATO DE ENTRADA:
 
 <!-- Adicione entradas aqui -->
 
+## Provider Codex sem configuração ou MCP automático — 2026-07-24
+**Contexto:** A documentação oficial atual diferencia orientação persistente em
+`AGENTS.md`, skills de repositório em `.agents/skills` e configuração confiável em
+`.codex/config.toml`.
+**Decisão:** O provider Codex instala `AGENTS.md`, mantém os artefatos compartilhados
+do protocolo em `.claude/` por compatibilidade e espelha skills em
+`.agents/skills`. Não cria `.codex/config.toml`, não toca configuração global e não
+ativa MCPs.
+**Alternativas descartadas:** instalar configuração Codex opinativa; copiar skills
+somente para `.claude/skills`, onde o Codex não as descobre oficialmente; converter
+todo o namespace compartilhado no primeiro incremento.
+**Consequências:** existe duplicação temporária das skills entre `.claude/skills` e
+`.agents/skills`. A fonte canônica deverá evoluir para separar protocolo comum de
+adapters por harness.
+**Status:** ativa
+
+## Backups dentro do diretório Git — 2026-07-24
+**Contexto:** O instalador precisa substituir árvores como `.claude` sem perder o
+estado anterior e sem colocar cópias potencialmente sensíveis no working tree.
+**Decisão:** Cada aplicação cria uma transação em
+`.git/adopt-cli/transactions/<id>`, com manifesto, backup e rollback explícito.
+Falhas durante cópia ou pós-processamento restauram automaticamente o estado
+anterior. O manifesto é vinculado ao caminho absoluto do projeto para impedir que
+um rollback forjado atinja outro diretório.
+**Alternativas descartadas:** backup dentro do working tree; backup apenas em `/tmp`;
+sobrescrita sem recuperação.
+**Consequências:** os backups sobrevivem a commits e não são versionados, mas podem
+ocupar espaço e conter configurações anteriores; uma política de listagem e limpeza
+segura deverá ser adicionada antes da publicação.
+**Status:** ativa
+
+## Template público canônico com instalador universal separado — 2026-07-24
+**Contexto:** O ecossistema mantinha três variantes com conteúdo parcialmente
+duplicado. O `template-claude-code-open` é hoje a variante pública que deve continuar
+funcional, enquanto este repositório já concentra a engenharia multi-harness.
+**Decisão:** Usar `template-claude-code-open` como fonte canônica do conteúdo
+universal e `template-claude-code-ts` como instalador/adaptador distribuível via
+`npx`. Diferenças por agente devem viver em providers; o conteúdo comum não deve ser
+mantido manualmente em múltiplas cópias. Até existir resolução de release e
+backup/rollback, o CLI continua não publicável.
+**Alternativas descartadas:** transformar o repositório público em CLI; manter os
+três templates sincronizados manualmente; usar o template privado como fonte remota
+padrão de uma ferramenta pública.
+**Consequências:** será necessária uma etapa de empacotamento ou download versionado
+do conteúdo público. As extensões exclusivas deste repositório precisam ser
+classificadas como provider, extensão opcional ou removidas antes da publicação.
+**Status:** ativa
+
 ## Não portar `git-commit-formatter` e `license-header-adder` para os repos irmãos — 2026-07-06
 **Contexto:** Ao mapear o gap entre os 3 templates (spec `chore-sync-template-ecosystem`), essas 2 das 5 skills exclusivas do `-ts` pareciam genéricas o bastante para virar universais (privado + `-open`), ao contrário das outras 3 (`adk-tool-scaffold`, `database-schema-validator`, `json-to-pydantic`), que são nichadas o suficiente para ficar só aqui.
 **Decisão:** Não portar nenhuma das duas.

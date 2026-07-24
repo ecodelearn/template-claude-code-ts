@@ -3,6 +3,7 @@ import { ToolProvider } from "../types";
 export const geminiProvider: ToolProvider = {
   name: "gemini",
   defaultSource: "ecodelearn/template-claude-code-ts",
+  defaultRef: "a5df95baf46cd646936f9585347d8dcec5b40738",
   copyRules: [
     {
       source: "GEMINI.md",

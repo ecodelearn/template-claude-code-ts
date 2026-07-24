@@ -17,6 +17,7 @@ export interface AdoptContext {
 export interface ToolProvider {
   name: string;
   defaultSource?: string;
+  defaultRef?: string;
   copyRules: CopyRule[];
   afterCopy?: (context: AdoptContext) => Promise<void>;
   nextSteps?: string[];

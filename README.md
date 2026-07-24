@@ -1,4 +1,4 @@
-# template-claude-code-ts
+# Agent Harness
 
 Template base para projetos com Claude Code e Gemini CLI. Estrutura pronta com memória persistente, gestão de specs por feature, skills com `/slash-commands`, agents isolados, regras por caminho de arquivo e hooks de segurança — para uso solo ou em times remotos.
 
@@ -88,6 +88,18 @@ git clone git@github.com:ecodelearn/template-claude-code-ts.git
 cd template-claude-code-ts
 npm install
 npm run build
+
+# Futuro uso via npm (publicação ainda bloqueada)
+npx @ecodelearn/agent-harness --help
+
+# Prévia segura — não altera o projeto
+node dist/adopt.js --tool claude --target /caminho/para/projeto --dry-run
+
+# Aplicação transacional — imprime um ID para rollback
+node dist/adopt.js --tool claude --target /caminho/para/projeto
+
+# Restaura uma instalação específica
+node dist/adopt.js --target /caminho/para/projeto --rollback <id>
 ```
 
 ### Claude Code
@@ -99,6 +111,16 @@ node dist/adopt.js --tool claude --target /caminho/para/projeto
 # ou via script npm
 npm run adopt -- --tool claude --target /caminho/para/projeto
 ```
+
+### Codex
+
+```bash
+node dist/adopt.js --tool codex --target /caminho/para/projeto --dry-run
+node dist/adopt.js --tool codex --target /caminho/para/projeto
+```
+
+O provider preserva `AGENTS.md` existente, instala skills em `.agents/skills` e
+não altera configuração global, `.codex/config.toml` ou MCPs.
 
 ### Gemini CLI
 
