@@ -40,8 +40,9 @@ continua bloqueada. O workflow evita execuções duplicadas: PRs validam branche
 push valida apenas `master`. Próxima etapa é revisar o PR e planejar o rollout npm.
 O hardening pós-review está no PR #2, com CI verde em Linux, macOS e Windows.
 PRs #1 e #2 foram mesclados. A documentação pública bilíngue e os arquivos de
-comunidade estão em implementação na spec `docs-bilingual-public-adoption`; o
-repositório continua com a visibilidade existente e o npm permanece privado.
+comunidade foram concluídos no PR draft #3; a matriz Ubuntu/macOS/Windows e o
+GitGuardian estão verdes e não havia review pendente na validação. O repositório
+continua com a visibilidade existente e o npm permanece privado.
 
 ## Integrações ativas
 
