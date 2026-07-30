@@ -250,12 +250,9 @@ cp .claude/settings.local.json.example .claude/settings.local.json
 
 → **[Guia completo para times: docs/team-workflow.md](docs/team-workflow.md)**
 
-## Índice global de padrões
+## Padrões entre projetos (opcional)
 
-Padrões reutilizáveis entre projetos ficam em:
-→ [ecodelearn/claude-memories — global-index.md](https://github.com/ecodelearn/claude-memories/blob/main/global-index.md)
-
-Use a skill `/publish-pattern` para contribuir.
+Se você mantém um repositório pessoal para acumular padrões reutilizáveis entre projetos, informe `owner/repo` como `patterns_repo` durante `/project-init` ou `/project-adopt`. A skill `/publish-pattern` usa esse valor para publicar lá; sem ele, os padrões ficam apenas em `.claude/memory/patterns.md` deste projeto.
 
 ## Documentação
 

@@ -21,6 +21,14 @@ rollback.
 - Providers for Claude Code, Codex, and Gemini CLI.
 - Cross-platform CI on Linux, macOS, and Windows.
 
+## Cross-project patterns (optional)
+
+If you keep a personal GitHub repo to accumulate reusable patterns across
+projects, set `owner/repo` as `patterns_repo` during `/project-init` or
+`/project-adopt`. The `/publish-pattern` skill uses that value to publish
+there; without it, patterns stay in this project's `.claude/memory/patterns.md`
+and no third-party repository is touched.
+
 ## Documentation
 
 - [Installation and first use](docs/en/getting-started.md)

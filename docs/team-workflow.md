@@ -224,7 +224,7 @@ A spec serve como fonte para a descrição do PR — tudo que os revisores preci
 
 ---
 
-## Publicando padrões no global-index
+## Publicando padrões entre projetos (opcional)
 
 Quando uma sessão descobre algo que vale para outros projetos do time:
 
@@ -232,7 +232,7 @@ Quando uma sessão descobre algo que vale para outros projetos do time:
 /publish-pattern
 ```
 
-Claude formata a entrada e atualiza `claude-memories/global-index.md`. Todos os projetos que consultam o global-index passam a ter acesso ao padrão.
+Isso só publica algo em GitHub se o time tiver configurado um `patterns_repo` (repositório próprio, definido durante `/project-init` ou `/project-adopt`) no `MEMORY.md`. Claude formata a entrada e atualiza o índice desse repositório. Sem `patterns_repo` configurado, a skill registra o padrão apenas em `.claude/memory/patterns.md` deste projeto — nenhum repositório de terceiros é usado por padrão.
 
 ---
 

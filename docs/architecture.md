@@ -115,7 +115,7 @@ Skills são diretórios com um `SKILL.md` como entrypoint, carregado via `/slash
 | `/pr-review` | Checklist antes de abrir ou revisar PR |
 | `/commit` | Formato padronizado de mensagens de commit |
 | `/deploy` | Checklist e procedimento de deploy |
-| `/publish-pattern` | Publica padrão reutilizável no global-index |
+| `/publish-pattern` | Publica padrão reutilizável no repositório pessoal de padrões (opcional, ver "Padrões entre projetos") |
 
 ---
 
@@ -275,17 +275,17 @@ Depois, `/project-adopt` mapeia o codebase automaticamente antes de qualquer con
 
 ---
 
-## Os dois repositórios
+## Padrões entre projetos (opcional)
+
+O template não depende de nenhum repositório externo para funcionar. Memória, specs e agent-memory ficam inteiramente dentro do próprio projeto, versionados com o código.
+
+Se o usuário quiser acumular padrões reutilizáveis entre vários projetos seus, pode informar um repositório GitHub próprio (`owner/repo`) como `patterns_repo` durante `/project-init` ou `/project-adopt` — esse valor fica salvo no front matter do `MEMORY.md`. A partir daí, `/publish-pattern` publica ali; sem esse campo preenchido, a skill só registra o padrão em `.claude/memory/patterns.md` deste projeto, e nenhum repositório de terceiros é tocado.
 
 ```
-ecodelearn/template-claude-code-ts   ← este repositório
-  Cada projeto clona e tem sua própria instância
+<owner>/<repo do projeto>   ← este projeto (obrigatório)
   Memória, specs e agent-memory ficam aqui, versionados com o código
 
-ecodelearn/claude-memories         ← repositório global
-  Índice de todos os projetos
-  Padrões reutilizáveis entre projetos
-  Atualizado via skill /publish-pattern
+<owner>/<patterns_repo>     ← repositório pessoal de padrões (opcional)
+  Índice de padrões reutilizáveis, definido pelo próprio usuário
+  Atualizado via skill /publish-pattern, só se configurado
 ```
-
-Os dois são independentes. Um projeto funciona completamente sem o `claude-memories`. O `claude-memories` é o bônus: a inteligência coletiva que cresce conforme mais projetos são usados.

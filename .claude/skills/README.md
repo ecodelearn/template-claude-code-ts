@@ -12,7 +12,7 @@ Invoque diretamente com `/nome-da-skill` ou deixe Claude invocar automaticamente
 | `/pr-review` | `pr-review/` | Antes de abrir ou revisar um PR |
 | `/commit` | `commit/` | Formatar e validar mensagem de commit |
 | `/deploy` | `deploy/` | Antes de qualquer deploy |
-| `/publish-pattern` | `publish-pattern/` | Publicar padrão reutilizável no global-index |
+| `/publish-pattern` | `publish-pattern/` | Publicar padrão reutilizável no repositório pessoal de padrões (opcional, requer `patterns_repo` no MEMORY.md) |
 | `git-commit-formatter` | `git-commit-formatter/` | Formatar mensagens de commit em Conventional Commits |
 | `license-header-adder` | `license-header-adder/` | Inserir cabeçalho de licença em arquivos novos |
 | `json-to-pydantic` | `json-to-pydantic/` | Converter JSON em modelos Pydantic |

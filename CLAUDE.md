@@ -31,11 +31,6 @@
 | Agentes especializados | `.claude/agents/README.md` |
 | Docs oficiais antes de web search | `.claude/references.md` |
 
-## Padrões globais — outros projetos
-
-Índice de padrões reutilizáveis entre todos os projetos:
-→ https://github.com/ecodelearn/claude-memories/blob/main/global-index.md
-
 > "The program should always respond to the user in the way that astonishes him least." — Lei do Menor Espanto, Tao of Programming, 4.1
 
 ## Princípios inegociáveis
@@ -46,6 +41,7 @@
 - Atualize specs e `INDEX.md` ao pausar qualquer trabalho
 - Código é do time — qualquer sessão deve conseguir continuar o trabalho de outra
 - Antes de web search, consulte `.claude/references.md` — fontes oficiais têm prioridade
+- **Sem fonte, sem afirmação:** se uma versão, flag, formato de API, data ou estatística não puder ser rastreada até `references.md`, docs oficiais ou o próprio código, diga isso em vez de arriscar um chute — um detalhe não verificado apresentado com confiança falsa é pior do que admitir a lacuna
 - **Stop-the-line:** ao encontrar falha inesperada, pare, preserve evidência, re-planeje — não continue empilhando código sobre erro
 - **TDD Red/Green/Refactor:** ao implementar qualquer funcionalidade, escreva o teste **antes** do código de produção (Red), implemente o mínimo para passar (Green), refatore sem quebrar (Refactor). Isso vale para toda issue, bugfix e feature — sem exceção.
 - **Definition of Done:** comportamento validado + testes passando + ciclo TDD verificado + verificação documentada na spec — "parece certo" não é done
