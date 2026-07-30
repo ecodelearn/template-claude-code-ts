@@ -6,6 +6,7 @@ const test = require("node:test");
 const root = path.resolve(__dirname, "..");
 const pairedGuides = [
   "getting-started.md",
+  "alternatives.md",
   "new-project.md",
   "existing-project.md",
   "cli-reference.md",

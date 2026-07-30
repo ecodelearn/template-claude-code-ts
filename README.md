@@ -9,6 +9,7 @@
 Documentação canônica em português:
 
 - [Instalação e primeiro uso](docs/pt-BR/getting-started.md)
+- [Duas formas de instalar: -open vs -ts](docs/pt-BR/alternatives.md)
 - [Projeto novo](docs/pt-BR/new-project.md)
 - [Adoção de projeto existente](docs/pt-BR/existing-project.md)
 - [Referência do CLI](docs/pt-BR/cli-reference.md)

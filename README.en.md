@@ -32,6 +32,7 @@ and no third-party repository is touched.
 ## Documentation
 
 - [Installation and first use](docs/en/getting-started.md)
+- [Two ways to install: -open vs -ts](docs/en/alternatives.md)
 - [New projects](docs/en/new-project.md)
 - [Adopting an existing project](docs/en/existing-project.md)
 - [CLI reference](docs/en/cli-reference.md)
