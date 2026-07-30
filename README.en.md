@@ -3,9 +3,12 @@
 [Português do Brasil](README.md) · [English](README.en.md)
 
 Agent Harness is a transactional installer for a shared coding-agent workflow. It
-adapts one canonical public template to Claude Code, Codex, and Gemini CLI while
-preserving existing files, blocking local secrets, and providing dry-run and
-rollback.
+installs the canonical content from
+[template-claude-code-open](https://github.com/ecodelearn/template-claude-code-open)
+— adapting it to Claude Code, Codex, and Gemini CLI — while preserving existing
+files, blocking local secrets, and providing dry-run and rollback. Don't need
+Node.js? Use `-open` directly: see
+[Two ways to install](docs/en/alternatives.md).
 
 > **Status:** `@ecodelearn/agent-harness` is still `private: true` and is not
 > available through `npx`. Use a source checkout as described in

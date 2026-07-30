@@ -18,8 +18,12 @@ Documentação canônica em português:
 - [Como contribuir](CONTRIBUTING.md) · [Segurança](SECURITY.md)
 
 Instalador transacional de um workflow compartilhado para Claude Code, Codex e
-Gemini CLI. Inclui memória persistente, specs por feature, skills reutilizáveis,
-regras por caminho e mecanismos de segurança para uso individual ou em equipe.
+Gemini CLI. Instala o conteúdo canônico de
+[template-claude-code-open](https://github.com/ecodelearn/template-claude-code-open)
+— memória persistente, specs por feature, skills reutilizáveis, regras por
+caminho e mecanismos de segurança — com prévia `--dry-run`, rollback
+transacional e adaptadores por provider. Não precisa de Node.js? Use o
+`-open` direto: veja [Duas formas de instalar](docs/pt-BR/alternatives.md).
 
 ## O problema que este template resolve
 
