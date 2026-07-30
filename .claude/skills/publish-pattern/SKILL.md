@@ -1,12 +1,14 @@
 ---
 name: publish-pattern
-description: Publica padrões reutilizáveis no global-index do claude-memories. Use quando uma solução se provar genuinamente reutilizável em outros projetos.
+description: Publica um padrão reutilizável no repositório pessoal de padrões do usuário, se houver um configurado. Use quando uma solução se provar genuinamente reutilizável em outros projetos.
 disable-model-invocation: true
 ---
 
 # Skill: publish-pattern
 
 **Quando usar:** Quando uma solução se provar genuinamente reutilizável em outros projetos. Use com critério — só o que realmente economizaria tempo ou evitaria erros em um contexto diferente.
+
+**Exige configuração:** esta skill só mexe em GitHub se `patterns_repo` estiver preenchido no front matter de `.claude/memory/MEMORY.md` (opcional, definido em `project-init` ou `project-adopt`). Se estiver vazio, pule direto para "Fallback local" abaixo — nunca clone, crie ou dê push em um repositório que o usuário não indicou.
 
 ---
 
@@ -20,7 +22,7 @@ Publique se a solução:
 Não publique:
 - Soluções muito específicas do domínio do negócio
 - Workarounds temporários
-- O que já está no global-index
+- O que já está no índice
 
 ---
 
@@ -38,66 +40,58 @@ Não publique:
 
 ---
 
-## Configuração
+## Fallback local (`patterns_repo` vazio)
 
-```
-claude-memories path:   ~/.claude/claude-memories/
-claude-memories remote: https://github.com/ecodelearn/claude-memories
-global-index file:      ~/.claude/claude-memories/global-index.md
-```
+Adicione a entrada acima em `.claude/memory/patterns.md` deste projeto (crie o arquivo se não existir) e informe ao usuário: "Nenhum `patterns_repo` configurado — registrado apenas localmente em `patterns.md`." Pare aqui.
 
 ---
 
-## Protocolo de execução
+## Protocolo de execução (`patterns_repo` configurado)
 
-### Passo 0 — Verificar e preparar o repositório claude-memories
+### Passo 0 — Ler o repositório configurado
 
-Antes de qualquer edição, verificar se `~/.claude/claude-memories/` existe e é um repo git.
+Leia `patterns_repo` no front matter de `.claude/memory/MEMORY.md` (formato `owner/repo`).
 
-**Se o diretório não existir ou não for um repo git:**
+### Passo 1 — Sincronizar o clone local
+
+Caminho do clone local: `~/.claude/patterns-repo/`
+
+**Se ainda não existir:**
 ```bash
-# Clonar o repositório
-git clone https://github.com/ecodelearn/claude-memories ~/.claude/claude-memories/
+git clone https://github.com/<patterns_repo> ~/.claude/patterns-repo/
 ```
 
-**Se o diretório existir mas não for git (pasta avulsa):**
+**Se já existir:**
 ```bash
-cd ~/.claude/claude-memories
-git init
-git remote add origin https://github.com/ecodelearn/claude-memories
-git fetch origin
-git checkout -b main origin/main
+cd ~/.claude/patterns-repo && git pull origin main
 ```
 
-**Se já for um repo git** (caso normal), apenas sincronizar:
-```bash
-cd ~/.claude/claude-memories && git pull origin main
-```
+Não tente recuperar um diretório que exista mas não seja git nesse caminho — se `git pull` falhar por isso, avise o usuário e pare; é o estado local dele para resolver, não desta skill.
 
-### Passo 1 — Ler o contexto do projeto atual
+### Passo 2 — Ler o slug do projeto atual
 
-Leia `.claude/memory/MEMORY.md` para confirmar o `project-slug`.
+Leia `.claude/memory/MEMORY.md` para confirmar `project`.
 
-### Passo 2 — Editar global-index.md
+### Passo 3 — Editar o índice
 
-Abra `~/.claude/claude-memories/global-index.md`.
+Abra `~/.claude/patterns-repo/global-index.md` (ou o arquivo de índice que o repositório do usuário realmente usar — confira o README dele se `global-index.md` não existir).
 
 Adicione a entrada na seção de categoria correspondente. Se a categoria não existir, crie com `### [Categoria]`.
 
-Atualize a data de "Última atualização" no topo do arquivo.
+Atualize a data de "última atualização" no topo do arquivo.
 
-### Passo 3 — Commit e push
+### Passo 4 — Commit e push
 
 ```bash
-cd ~/.claude/claude-memories
+cd ~/.claude/patterns-repo
 git add global-index.md
 git commit -m "docs(global-index): add [nome] from [project-slug]"
 git push origin main
 ```
 
-### Passo 4 — Registrar no projeto atual
+### Passo 5 — Registrar localmente também
 
-Adicione também uma nota em `.claude/memory/patterns.md` do projeto atual (ou crie o arquivo se não existir), com referência ao padrão publicado.
+Adicione também uma nota em `.claude/memory/patterns.md` do projeto atual, referenciando o padrão publicado.
 
 ---
 
@@ -110,7 +104,7 @@ Adicione também uma nota em `.claude/memory/patterns.md` do projeto atual (ou c
 **Solução:** Cursor baseado em `(created_at, id)` com índice composto — evita full scan
 **Por que funciona:** O banco filtra a partir de um ponto fixo em vez de pular N linhas
 **Reutilizável quando:** Qualquer endpoint com paginação em tabela de alto volume
-**Detalhes:** ecodelearn/minha-api → .claude/memory/lessons.md#cursor-pagination
+**Detalhes:** `<owner>/minha-api` → `.claude/memory/lessons.md#cursor-pagination`
 ```
 
 ---
@@ -119,7 +113,7 @@ Adicione também uma nota em `.claude/memory/patterns.md` do projeto atual (ou c
 
 | Erro | Causa | Fix |
 |------|-------|-----|
-| `not a git repository` | Pasta existe mas não foi inicializada com git | Executar Passo 0 — branch git init |
-| `Permission denied` | SSH não configurado para GitHub | Usar HTTPS (já configurado acima) |
+| `not a git repository` | `~/.claude/patterns-repo/` existe mas não é um clone git | Avise o usuário; não faça `git init` automático num histórico que não é seu |
+| `Permission denied` | Sem autenticação GitHub configurada para aquele repo | Peça pro usuário checar as credenciais `gh`/git — não é problema desta skill resolver |
 | `rejected — non-fast-forward` | Repo remoto tem commits não puxados | `git pull --rebase origin main` antes do push |
-| `global-index.md not found` | Repo clonado mas arquivo não existe | Criar o arquivo com o template básico |
+| arquivo de índice não encontrado | Repo clonado mas sem `global-index.md` | Pergunte ao usuário qual arquivo/formato o repo dele realmente usa antes de inventar um |

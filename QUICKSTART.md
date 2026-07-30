@@ -87,14 +87,16 @@ Em seguida você responde **8 perguntas conversacionais** — uma por vez:
 | 5 | Integrações MCP | GitHub, PostgreSQL |
 | 6 | Documentação das libs | Fastify, Prisma, Vitest |
 | 7 | Estado inicial | "Começando do zero" |
+| 8 | Padrões entre projetos (opcional) | `owner/repo` ou vazio |
 
 **O que é configurado e commitado automaticamente:**
 - `MEMORY.md` preenchido com o contexto e idioma do projeto
 - `CLAUDE.md` atualizado com o nome e regras reais
 - `references.md` populado com os links das libs informadas
 - `README_MCP.md` criado com instruções de setup das integrações (se houver)
-- Projeto registrado no [global-index](https://github.com/ecodelearn/claude-memories/blob/main/global-index.md)
 - **Commit automático** do setup base — o repo já não parece mais o template
+
+Se você respondeu a pergunta opcional sobre repositório pessoal de padrões, `patterns_repo` fica salvo no `MEMORY.md` para a skill `/publish-pattern` usar depois.
 
 ---
 

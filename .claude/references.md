@@ -4,6 +4,12 @@
 > Prefira sempre fontes oficiais para boas práticas, padrões de código e APIs.
 > A seção "Deste Projeto" é preenchida pelo project-init ou manualmente conforme o projeto evolui.
 
+## Sem fonte confiável
+
+Afirmações de alto risco — número de versão de lib/pacote, flag de CLI, assinatura de API, chave de config, nome de env var, data exata, paper/autor citado — precisam ser rastreáveis até uma fonte listada aqui, a doc oficial ou o próprio código.
+
+Se não houver: diga isso explicitamente em vez de chutar. Não afirme uma versão, flag ou formato de API não verificado com a mesma confiança de algo verificado — marque como não confirmado e aponte onde o usuário pode checar.
+
 ---
 
 ## Claude Code

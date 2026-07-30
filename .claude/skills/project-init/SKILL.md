@@ -70,6 +70,10 @@ Salve a escolha como `language: en` ou `language: pt-br` no front matter do MEMO
 
 "O projeto já tem código ou está começando do zero? Se já existe, descreva brevemente o estado atual."
 
+### 8 — Padrões entre projetos (opcional)
+
+"Você mantém (ou quer manter) um repositório GitHub pessoal que acumula padrões reutilizáveis entre todos os seus projetos? Se sim, me diga `owner/repo`. Se não, só apertar enter — os padrões ficam locais, em `.claude/memory/patterns.md` deste projeto."
+
 ---
 
 ## Ações após a entrevista
@@ -78,6 +82,7 @@ Execute em ordem:
 
 1. **Preencha `.claude/memory/MEMORY.md`**
    - Insira slug, repo, stack e **language** no front matter YAML
+   - Insira `patterns_repo` apenas se o usuário informou um na pergunta 8 — nunca invente ou deixe um valor default
    - Preencha todas as seções com as respostas coletadas
    - Escreva o conteúdo no idioma escolhido
 
@@ -94,12 +99,7 @@ Execute em ordem:
    - Inclua o comando `claude mcp add` para cada uma
    - Escreva no idioma escolhido
 
-5. **Registre no global-index**
-   - Acesse `claude-memories/global-index.md`
-   - Adicione o projeto na tabela de registro: slug | repo | domínio | status "ativo"
-   - Crie a entrada na árvore de conhecimento
-
-6. **Finalize o git** (OBRIGATÓRIO — não pule este passo)
+5. **Finalize o git** (OBRIGATÓRIO — não pule este passo)
 
    Execute via Bash:
    ```bash
@@ -133,9 +133,9 @@ Execute em ordem:
      git push -u origin main
    ```
 
-7. **Confirme ao usuário** o que foi configurado e pergunte se há ajustes
+6. **Confirme ao usuário** o que foi configurado e pergunte se há ajustes
 
-8. **Instrua sobre o próximo passo obrigatório**
+7. **Instrua sobre o próximo passo obrigatório**
 
    Ao final, sempre exiba esta mensagem:
 

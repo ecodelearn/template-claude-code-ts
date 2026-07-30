@@ -62,7 +62,8 @@ Algumas perguntas que preciso de você:
    (ex: nunca alterar migrations existentes, PR obrigatório)
 3. O projeto é solo, dupla ou time? Idioma de comunicação? (PT-BR / EN)
 4. Integrações MCP necessárias? (GitHub, banco, Sentry, outros)
-5. Há features em andamento que devo criar specs agora?"
+5. Há features em andamento que devo criar specs agora?
+6. (Opcional) Você mantém um repositório GitHub pessoal de padrões entre projetos? Se sim, me diga `owner/repo` — senão pule, os padrões ficam locais a este projeto."
 ```
 
 ### Fase 3 — Ações após validação
@@ -73,6 +74,7 @@ Execute em ordem:
    - Use a stack e convenções *descobertas* do codebase (não as respondidas)
    - Inclua o que está sendo trabalhado atualmente como "Estado atual"
    - Salve `language: pt-br` ou `language: en` conforme indicado
+   - Insira `patterns_repo` apenas se o usuário informou um na pergunta 6 — se o projeto já tinha um `MEMORY.md` sem esse campo, deixe em branco, não pergunte de novo nem assuma um valor
 
 2. **Atualize `CLAUDE.md`**
    - Substitua `[PROJECT_NAME]` pelo nome real
@@ -87,10 +89,7 @@ Execute em ordem:
 
 5. **Crie `README_MCP.md`** se houver integrações MCP
 
-6. **Registre no global-index**
-   - Adicione o projeto em `claude-memories/global-index.md`
-
-7. **Confirme ao usuário** o que foi configurado e pergunte se há ajustes
+6. **Confirme ao usuário** o que foi configurado e pergunte se há ajustes
 
 ---
 
