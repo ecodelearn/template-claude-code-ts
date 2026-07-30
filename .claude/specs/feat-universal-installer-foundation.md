@@ -146,3 +146,46 @@ abertas em branch complementar:
 - [x] Tipar `operations` explicitamente como `CopyOperation[]`.
 - [x] Restaurar `language: pt-br` no front matter de `MEMORY.md`.
 - [x] Validar CI multiplataforma do PR complementar #2.
+
+## Checklist de release candidate — 2026-07-30
+
+Executado localmente contra o tarball empacotado (`npm pack`), simulando uma
+instalação real via `npx`, com o provider Codex e um repositório git de teste:
+
+- [x] **Tarball**: `npm pack` gera 28 arquivos, extraído e executado como pacote
+  instalado — sem depender do checkout de desenvolvimento.
+- [x] **Instalação real** (`--yes`, sem `--dry-run`): copia `AGENTS.md`,
+  `.claude`, `.agents/skills`, `.gitignore`; registra transação com ID e comando
+  de rollback.
+- [x] **Update/conflito**: após editar `AGENTS.md` localmente, nova execução em
+  `--dry-run` mostra `[PRESERVAR]` para `AGENTS.md`/`.gitignore` (overwrite:
+  never) e `[PERGUNTAR]` para `.claude`/`.agents/skills` (overwrite: prompt) —
+  comportamento correto, nada sobrescrito silenciosamente.
+- [x] **Rollback** (`--rollback <id>`): restaura o estado exato de antes da
+  instalação — `AGENTS.md`, `.claude`, `.agents`, `.gitignore` removidos,
+  `README.md` original intacto.
+- [x] **Desinstalação**: não existe um comando `--uninstall` dedicado — o fluxo
+  é `--rollback` (remove o que foi adicionado) seguido de `--forget` (apaga o
+  backup). Testado e funcionou; vale documentar esse fluxo explicitamente no
+  README/CLI reference, já que "uninstall" não aparece literal no `--help`.
+
+**Pendências que este checklist NÃO cobre e ficaram em aberto:**
+
+- **CI real da PR #4 não disparou.** PR aberta de `agent/bilingual-public-docs`
+  para `master` em 2026-07-30 (commit `87c73fd`) não gerou nenhuma execução do
+  workflow `CI` — apenas "Copilot Code Review" rodou. Confirmado via
+  `gh api .../actions/runs` (nenhum run com esse `head_sha`) e via check-suites
+  (suite "GitHub Actions" ficou "in_progress" por 15+ minutos sem nenhum job
+  real). `rerequest` via API retornou 404. Causa não diagnosticada com as
+  ferramentas disponíveis — precisa de inspeção manual na aba Checks da PR
+  no GitHub (possível aprovação pendente ou configuração de organização não
+  visível via API). **Isso significa que a matriz Linux/macOS/Windows não
+  validou o commit atual.**
+- **Acesso ao escopo npm `@ecodelearn` não verificado.** `npm whoami` falha
+  com `ENEEDAUTH` neste ambiente — não há login configurado aqui. Precisa ser
+  validado pelo usuário (`npm login` + `npm access` ou tentativa real de
+  publish) fora deste ambiente.
+- Só o provider Codex foi exercitado ponta a ponta neste checklist; os demais
+  (Claude, Gemini/Antigravity) compartilham o mesmo motor de transação já
+  coberto pelos testes automatizados, mas não foram re-testados manualmente
+  aqui.
