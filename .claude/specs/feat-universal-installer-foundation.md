@@ -169,22 +169,22 @@ instalação real via `npx`, com o provider Codex e um repositório git de teste
   backup). Testado e funcionou; vale documentar esse fluxo explicitamente no
   README/CLI reference, já que "uninstall" não aparece literal no `--help`.
 
-**Pendências que este checklist NÃO cobre e ficaram em aberto:**
+**Atualização 2026-07-30, resolvida:** a PR #4 (aberta de
+`agent/bilingual-public-docs`) nunca disparou CI porque a branch tinha
+divergido do `master` antes do squash-merge da PR #3 — o `merge-base` que o
+GitHub usava ainda era o commit anterior àquele squash, então o diff mostrava
+38 arquivos e `mergeable: CONFLICTING`. Fechada e substituída pela PR #5,
+cortada direto do `master` atual com só o commit real (`cherry-pick`) — diff
+de 13 arquivos, `mergeable: MERGEABLE`, `mergeStateStatus: CLEAN`. A matriz
+completa rodou e passou: `windows-latest/Node20`, `ubuntu-latest/Node20`,
+`ubuntu-latest/Node22`, `ubuntu-latest/Node24`, `macos-latest/Node20`, além do
+GitGuardian. **Windows/macOS/Linux estão validados para este commit.**
 
-- **CI real da PR #4 não disparou.** PR aberta de `agent/bilingual-public-docs`
-  para `master` em 2026-07-30 (commit `87c73fd`) não gerou nenhuma execução do
-  workflow `CI` — apenas "Copilot Code Review" rodou. Confirmado via
-  `gh api .../actions/runs` (nenhum run com esse `head_sha`) e via check-suites
-  (suite "GitHub Actions" ficou "in_progress" por 15+ minutos sem nenhum job
-  real). `rerequest` via API retornou 404. Causa não diagnosticada com as
-  ferramentas disponíveis — precisa de inspeção manual na aba Checks da PR
-  no GitHub (possível aprovação pendente ou configuração de organização não
-  visível via API). **Isso significa que a matriz Linux/macOS/Windows não
-  validou o commit atual.**
-- **Acesso ao escopo npm `@ecodelearn` não verificado.** `npm whoami` falha
-  com `ENEEDAUTH` neste ambiente — não há login configurado aqui. Precisa ser
-  validado pelo usuário (`npm login` + `npm access` ou tentativa real de
-  publish) fora deste ambiente.
+**Pendências que ainda ficam em aberto:**
+
+- **Acesso ao escopo npm `@ecodelearn`.** `npm whoami` confirmou login como
+  `ecodelearn` em 2026-07-30, mas acesso de publish ao escopo (`npm access` ou
+  uma tentativa real de `publish`) ainda não foi testado.
 - Só o provider Codex foi exercitado ponta a ponta neste checklist; os demais
   (Claude, Gemini/Antigravity) compartilham o mesmo motor de transação já
   coberto pelos testes automatizados, mas não foram re-testados manualmente

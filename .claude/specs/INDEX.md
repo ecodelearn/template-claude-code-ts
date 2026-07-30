@@ -10,7 +10,7 @@
 
 | Spec | Slug | Próximo passo imediato | Responsável |
 |------|------|------------------------|-------------|
-| [feat-universal-installer-foundation](feat-universal-installer-foundation.md) | `template-claude-code-ts::feat-universal-installer-foundation` | Diagnosticar por que a CI da PR #4 não disparou (bloqueia validação Windows/macOS); depois validar acesso npm ao escopo `@ecodelearn` | — |
+| [feat-universal-installer-foundation](feat-universal-installer-foundation.md) | `template-claude-code-ts::feat-universal-installer-foundation` | CI multiplataforma validada (PR #5); falta confirmar acesso de publish ao escopo `@ecodelearn` antes de decidir publicar | — |
 | [chore-sync-template-ecosystem](chore-sync-template-ecosystem.md) | `template-claude-code-ts::chore-sync-template-ecosystem` | Decidir se `git-commit-formatter`/`license-header-adder` viram universais | — |
 
 ---
