@@ -88,7 +88,7 @@ as diferenças que dependem do canal de instalação.
 - [x] Criar matriz CI para Linux, macOS e Windows com Actions fixadas por SHA.
 - [x] Executar e validar a primeira matriz CI no GitHub.
 - [x] Definir nome público: `@ecodelearn/agent-harness`.
-- [ ] Validar acesso ao escopo npm e preparar publicação via `npx`.
+- [x] Validar acesso ao escopo npm e preparar publicação via `npx`.
 
 ## Verificação
 
@@ -180,12 +180,45 @@ completa rodou e passou: `windows-latest/Node20`, `ubuntu-latest/Node20`,
 `ubuntu-latest/Node22`, `ubuntu-latest/Node24`, `macos-latest/Node20`, além do
 GitGuardian. **Windows/macOS/Linux estão validados para este commit.**
 
-**Pendências que ainda ficam em aberto:**
+**Acesso ao escopo npm `@ecodelearn` — validado em 2026-07-30:**
 
-- **Acesso ao escopo npm `@ecodelearn`.** `npm whoami` confirmou login como
-  `ecodelearn` em 2026-07-30, mas acesso de publish ao escopo (`npm access` ou
-  uma tentativa real de `publish`) ainda não foi testado.
-- Só o provider Codex foi exercitado ponta a ponta neste checklist; os demais
-  (Claude, Gemini/Antigravity) compartilham o mesmo motor de transação já
-  coberto pelos testes automatizados, mas não foram re-testados manualmente
-  aqui.
+- `npm whoami` → `ecodelearn`; `npm profile get` confirma email verificado
+  (conta criada às 13:24 do mesmo dia).
+- `npm org ls ecodelearn` → `ecodelearn - owner`: `@ecodelearn` é uma
+  organização npm e a conta logada é dona dela — acesso de publish esperado
+  por posse do escopo, não por permissão emprestada.
+- `npm view @ecodelearn/agent-harness` → `E404`: nome ainda livre no registro,
+  confirma o que o spec já registrava.
+- **Não coberto:** `npm publish --dry-run` não valida autenticação contra o
+  registro (é só empacotamento local, igual `npm pack`), e uma tentativa real
+  de `publish` está fora do escopo desta sessão (`private: true` inclusive
+  bloqueia isso localmente antes mesmo de tentar a rede). Ou seja: posse do
+  escopo está confirmada, mas o primeiro `publish` de verdade é a única
+  validação que só acontece no momento da publicação em si.
+- **2FA habilitado em 2026-07-30, mesmo dia:** `npm profile get` confirma
+  `two-factor auth: auth-and-writes` (nível mais forte — exige 2FA tanto pra
+  login quanto pra qualquer operação de escrita/publish).
+
+## Duas lacunas novas encontradas ao validar o gate de publish — 2026-07-30
+
+- **Pins de `defaultRef` desatualizados — corrigido em 2026-07-30.**
+  `claude.ts`/`codex.ts` atualizados para `eb8e8e6` (HEAD atual do `-open`) e
+  `antigravity.ts` para `b19d828` (HEAD do `-ts` no momento do fix — pin
+  auto-referente sempre fica um commit atrás por definição, já que não dá
+  pra apontar pra um commit que inclui o próprio ato de repinar). Nenhum
+  teste crava o hash literal, só o formato — checado antes de mudar.
+- **`template-claude-code-ts` continua com visibilidade `PRIVATE`.** O
+  provider Gemini/Antigravity usa `defaultSource:
+  "ecodelearn/template-claude-code-ts"` — ou seja, o próprio instalador tenta
+  clonar este repositório do GitHub. Enquanto ele for privado, qualquer
+  pessoa de fora que rodar `npx ... --tool gemini` (ou `antigravity`) vai
+  falhar no clone por falta de permissão. Os providers Claude/Codex não são
+  afetados (fonte é o `-open`, que já é `PUBLIC`). Isso é uma decisão de
+  visibilidade explícita, não algo que deva ser mudado automaticamente — a
+  spec já registrava essa dependência como temporária, até o conteúdo do
+  Gemini virar adapter extraído para o `-open`.
+
+Só o provider Codex foi exercitado ponta a ponta no checklist de release
+candidate; os demais (Claude, Gemini/Antigravity) compartilham o mesmo motor
+de transação já coberto pelos testes automatizados, mas não foram
+re-testados manualmente.

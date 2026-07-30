@@ -10,7 +10,7 @@
 
 | Spec | Slug | Próximo passo imediato | Responsável |
 |------|------|------------------------|-------------|
-| [feat-universal-installer-foundation](feat-universal-installer-foundation.md) | `template-claude-code-ts::feat-universal-installer-foundation` | CI multiplataforma validada (PR #5); falta confirmar acesso de publish ao escopo `@ecodelearn` antes de decidir publicar | — |
+| [feat-universal-installer-foundation](feat-universal-installer-foundation.md) | `template-claude-code-ts::feat-universal-installer-foundation` | Atualizar os `defaultRef` pinados (estão desatualizados); decidir visibilidade do `-ts` (Gemini/Antigravity clona este repo); depois `private:false` + primeiro `npm publish` | — |
 | [chore-sync-template-ecosystem](chore-sync-template-ecosystem.md) | `template-claude-code-ts::chore-sync-template-ecosystem` | Decidir se `git-commit-formatter`/`license-header-adder` viram universais | — |
 
 ---

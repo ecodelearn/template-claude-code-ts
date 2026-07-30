@@ -3,7 +3,7 @@ import { ToolProvider } from "../types";
 export const codexProvider: ToolProvider = {
   name: "codex",
   defaultSource: "ecodelearn/template-claude-code-open",
-  defaultRef: "758fc59ac15fddcd459f3dc2c212f57e36cbd6bd",
+  defaultRef: "eb8e8e6302cd1a93e09226681ea34f483bc74e73",
   copyRules: [
     {
       source: "AGENTS.md",
