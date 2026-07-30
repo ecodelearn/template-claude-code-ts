@@ -9,31 +9,36 @@
 - npm
 - A target project already initialized as a Git repository
 
-The npm package remains `private: true`. Run it from a checkout for now:
+`@ecodelearn/agent-harness` is published on npm — no checkout needed:
+
+```bash
+npx @ecodelearn/agent-harness --tool codex --target /path/to/project --dry-run
+```
+
+Replace `codex` with `claude` or `gemini` as needed.
+
+### Alternative: from a source checkout
 
 ```bash
 git clone https://github.com/ecodelearn/template-claude-code-ts.git
 cd template-claude-code-ts
 npm ci
 npm run build
+node dist/adopt.js --tool codex --target /path/to/project --dry-run
 ```
 
 ## First preview
 
 ```bash
-node dist/adopt.js \
-  --tool codex \
-  --target /path/to/project \
-  --dry-run
+npx @ecodelearn/agent-harness --tool codex --target /path/to/project --dry-run
 ```
 
-Replace `codex` with `claude` or `gemini` as needed. Review every planned action:
-copy, preserve, prompt, overwrite, or missing.
+Review every planned action: copy, preserve, prompt, overwrite, or missing.
 
 ## Apply
 
 ```bash
-node dist/adopt.js --tool codex --target /path/to/project
+npx @ecodelearn/agent-harness --tool codex --target /path/to/project
 ```
 
 The CLI prints a transaction ID and an exact rollback command. Keep the backup
@@ -49,14 +54,6 @@ until the adopted project is validated.
 6. Remove the transaction backup only after acceptance.
 
 ```bash
-node /path/to/harness/dist/adopt.js --target . --list-transactions
-node /path/to/harness/dist/adopt.js --target . --forget <id>
+npx @ecodelearn/agent-harness --target . --list-transactions
+npx @ecodelearn/agent-harness --target . --forget <id>
 ```
-
-## Future npm interface
-
-```bash
-npx @ecodelearn/agent-harness --tool codex --target . --dry-run
-```
-
-This is not available from the public registry while `private: true` remains set.

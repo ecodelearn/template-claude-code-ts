@@ -31,8 +31,10 @@ git diff --check
 ```
 
 Every public guide added under `docs/en/` must have an equivalent
-`docs/pt-BR/` guide, and vice versa. Do not claim npm availability while the
-package remains `private: true`.
+`docs/pt-BR/` guide, and vice versa. `@ecodelearn/agent-harness` is published
+on npm — keep install instructions accurate to that (don't reintroduce
+"not yet available" language, and don't claim a feature works via `npx`
+before it's actually released).
 
 Pull requests should explain what changed, why, user impact, security impact, and
 verification. Maintainers may request changes before merging.
@@ -66,7 +68,9 @@ git diff --check
 ```
 
 Todo guia público em `docs/pt-BR/` deve possuir equivalente em `docs/en/`, e
-vice-versa. Não anuncie disponibilidade npm enquanto `private: true` permanecer.
+vice-versa. `@ecodelearn/agent-harness` está publicado no npm — mantenha as
+instruções de instalação fiéis a isso (não reintroduza linguagem de "ainda não
+disponível", nem anuncie via `npx` algo que ainda não foi lançado de verdade).
 
 O PR deve explicar mudança, motivo, impacto ao usuário, impacto de segurança e
 verificações. Maintainers podem solicitar ajustes antes do merge.

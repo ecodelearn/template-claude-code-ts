@@ -2,9 +2,11 @@
 
 [Português do Brasil](README.md) · [English](README.en.md)
 
-> **Estado:** o pacote `@ecodelearn/agent-harness` continua com `private: true` e
-> ainda não está disponível via `npx`. Use o checkout do repositório conforme o
-> [guia de início](docs/pt-BR/getting-started.md).
+> **Estado:** `@ecodelearn/agent-harness@1.0.0` está publicado no npm.
+> ```bash
+> npx @ecodelearn/agent-harness --tool codex --target . --dry-run
+> ```
+> Veja o [guia de início](docs/pt-BR/getting-started.md) para o passo a passo completo.
 
 Documentação canônica em português:
 
@@ -104,7 +106,20 @@ gemini
 
 ## Instalação por tipo de CLI
 
-Setup base do CLI de adoção:
+Via npm (publicado):
+
+```bash
+# Prévia segura — não altera o projeto
+npx @ecodelearn/agent-harness --tool claude --target /caminho/para/projeto --dry-run
+
+# Aplicação transacional — imprime um ID para rollback
+npx @ecodelearn/agent-harness --tool claude --target /caminho/para/projeto
+
+# Restaura uma instalação específica
+npx @ecodelearn/agent-harness --target /caminho/para/projeto --rollback <id>
+```
+
+Alternativa via checkout do repositório:
 
 ```bash
 git clone git@github.com:ecodelearn/template-claude-code-ts.git
@@ -112,16 +127,8 @@ cd template-claude-code-ts
 npm install
 npm run build
 
-# Futuro uso via npm (publicação ainda bloqueada)
-npx @ecodelearn/agent-harness --help
-
-# Prévia segura — não altera o projeto
 node dist/adopt.js --tool claude --target /caminho/para/projeto --dry-run
-
-# Aplicação transacional — imprime um ID para rollback
 node dist/adopt.js --tool claude --target /caminho/para/projeto
-
-# Restaura uma instalação específica
 node dist/adopt.js --target /caminho/para/projeto --rollback <id>
 ```
 

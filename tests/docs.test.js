@@ -33,11 +33,11 @@ test("ships equivalent PT-BR and English documentation entry points", () => {
   }
 });
 
-test("does not present the unpublished npm package as available", () => {
+test("documents the published npm package as available via npx", () => {
   for (const file of ["README.md", "README.en.md"]) {
     const content = fs.readFileSync(path.join(root, file), "utf8");
-    assert.match(content, /private: true/);
-    assert.match(content, /npx/);
+    assert.doesNotMatch(content, /private: true/);
+    assert.match(content, /npx @ecodelearn\/agent-harness/);
   }
 });
 

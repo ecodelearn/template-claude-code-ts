@@ -10,9 +10,11 @@ files, blocking local secrets, and providing dry-run and rollback. Don't need
 Node.js? Use `-open` directly: see
 [Two ways to install](docs/en/alternatives.md).
 
-> **Status:** `@ecodelearn/agent-harness` is still `private: true` and is not
-> available through `npx`. Use a source checkout as described in
-> [Getting started](docs/en/getting-started.md).
+> **Status:** `@ecodelearn/agent-harness@1.0.0` is published on npm.
+> ```bash
+> npx @ecodelearn/agent-harness --tool codex --target . --dry-run
+> ```
+> See [Getting started](docs/en/getting-started.md) for the full walkthrough.
 
 ## What it provides
 
@@ -46,26 +48,21 @@ and no third-party repository is touched.
 ## Safe preview
 
 ```bash
+npx @ecodelearn/agent-harness --tool codex --target /path/to/project --dry-run
+```
+
+The target must already be a Git repository. The installer does not change global
+agent settings, activate MCP servers, or publish anything.
+
+## From a source checkout (alternative)
+
+```bash
 git clone https://github.com/ecodelearn/template-claude-code-ts.git
 cd template-claude-code-ts
 npm ci
 npm run build
 node dist/adopt.js --tool codex --target /path/to/project --dry-run
 ```
-
-The target must already be a Git repository. The installer does not change global
-agent settings, activate MCP servers, or publish anything.
-
-## Future npm usage
-
-After a separate release review removes `private: true`, the intended interface is:
-
-```bash
-npx @ecodelearn/agent-harness --tool codex --target . --dry-run
-```
-
-This command is documentation of the planned interface, not a currently available
-installation method.
 
 ## License
 

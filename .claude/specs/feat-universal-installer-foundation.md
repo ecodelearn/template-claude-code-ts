@@ -1,9 +1,10 @@
 # Spec: Universal installer foundation
 
-**Status:** `in-progress`
+**Status:** `done`
 **Slug:** `template-claude-code-ts::feat-universal-installer-foundation`
 **Criado em:** 2026-07-24
-**Última atualização:** 2026-07-24
+**Última atualização:** 2026-07-30
+**Concluída em:** 2026-07-30 — `@ecodelearn/agent-harness@1.0.0` publicado no npm, `npx` validado ponta a ponta. PR #4 fechada/substituída (branch contaminada por squash-merge anterior); PRs #5–#9 mescladas com CI multiplataforma verde.
 
 ---
 

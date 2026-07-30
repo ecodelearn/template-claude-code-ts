@@ -8,7 +8,7 @@ There are two separate repositories in this ecosystem. Pick the one that fits wh
 |---|---|---|
 | Requires Node.js/npm | No | Yes (Node >= 20) |
 | Requires | Git, `gh` CLI | Git, `gh` CLI, Node.js, npm |
-| Install method | `git`/`gh repo clone` + a shell (`adopt.sh`) or PowerShell (`adopt.ps1`) script | `npm ci && npm run build` from a checkout today; `npx @ecodelearn/agent-harness` once published |
+| Install method | `git`/`gh repo clone` + a shell (`adopt.sh`) or PowerShell (`adopt.ps1`) script | `npx @ecodelearn/agent-harness` (published on npm) |
 | Providers supported | Claude Code (`.claude/`, `CLAUDE.md`) + a generic `AGENTS.md` other AGENTS.md-reading tools can pick up | Claude Code, Codex (`.agents/skills`), Gemini/Antigravity (`.gemini/skills`) — provider-specific adapters |
 | Dry-run / rollback / transactions | No — the script copies files directly | Yes — every install is a transaction with `--dry-run`, `--rollback`, `--list-transactions`, `--forget` |
 | Best for | Anyone without Node.js, or who only needs Claude Code | Codex/Gemini users, or anyone who wants preview/rollback safety before touching a real project |
@@ -46,11 +46,7 @@ Full guide: [github.com/ecodelearn/template-claude-code-open](https://github.com
 See [Installation and first use](getting-started.md) for the full walkthrough (requirements, `--dry-run`, applying, validating, rollback). Short version:
 
 ```bash
-git clone https://github.com/ecodelearn/template-claude-code-ts.git
-cd template-claude-code-ts
-npm ci
-npm run build
-node dist/adopt.js --tool codex --target /path/to/project --dry-run
+npx @ecodelearn/agent-harness --tool codex --target /path/to/project --dry-run
 ```
 
 Replace `codex` with `claude` or `gemini` depending on your agent — see [Providers](providers.md) for what each one sets up.

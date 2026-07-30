@@ -9,25 +9,31 @@
 - npm
 - Um projeto já inicializado como repositório Git
 
-O pacote npm continua com `private: true`. Por enquanto, execute pelo checkout:
+`@ecodelearn/agent-harness` está publicado no npm — sem precisar de checkout:
+
+```bash
+npx @ecodelearn/agent-harness --tool codex --target /caminho/para/projeto --dry-run
+```
+
+Troque `codex` por `claude` ou `gemini` conforme o agente.
+
+### Alternativa: a partir de um checkout do repositório
 
 ```bash
 git clone https://github.com/ecodelearn/template-claude-code-ts.git
 cd template-claude-code-ts
 npm ci
 npm run build
+node dist/adopt.js --tool codex --target /caminho/para/projeto --dry-run
 ```
 
 ## Primeira prévia
 
 ```bash
-node dist/adopt.js \
-  --tool codex \
-  --target /caminho/para/projeto \
-  --dry-run
+npx @ecodelearn/agent-harness --tool codex --target /caminho/para/projeto --dry-run
 ```
 
-Troque `codex` por `claude` ou `gemini` conforme o agente. Leia o plano:
+Leia o plano:
 
 - `COPIAR`: destino ainda não existe;
 - `PRESERVAR`: o arquivo existente será mantido;
@@ -38,7 +44,7 @@ Troque `codex` por `claude` ou `gemini` conforme o agente. Leia o plano:
 ## Aplicação
 
 ```bash
-node dist/adopt.js --tool codex --target /caminho/para/projeto
+npx @ecodelearn/agent-harness --tool codex --target /caminho/para/projeto
 ```
 
 Ao terminar, o CLI imprime um ID de transação e o comando de rollback. Guarde esse
@@ -56,16 +62,6 @@ No projeto adotado:
 6. só depois remova o backup da transação.
 
 ```bash
-node /caminho/do/harness/dist/adopt.js --target . --list-transactions
-node /caminho/do/harness/dist/adopt.js --target . --forget <id>
+npx @ecodelearn/agent-harness --target . --list-transactions
+npx @ecodelearn/agent-harness --target . --forget <id>
 ```
-
-## Uso futuro via npm
-
-O comando planejado é:
-
-```bash
-npx @ecodelearn/agent-harness --tool codex --target . --dry-run
-```
-
-Ele ainda não funciona no registro público enquanto `private: true` estiver ativo.

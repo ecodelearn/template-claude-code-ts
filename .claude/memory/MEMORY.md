@@ -44,6 +44,22 @@ comunidade foram concluídos no PR #3. Após review do Copilot, a matriz passou 
 testar Node 20, 22 e 24 e `CODE_OF_CONDUCT.md` entrou na allowlist pública. O
 repositório continua com a visibilidade existente e o npm permanece privado.
 
+2026-07-30 — Publicado. `private: true` → `false`, `publishConfig.access: public`
+adicionado, `npm publish --access public` executado com sucesso (2FA via browser,
+não código de 6 dígitos). `@ecodelearn/agent-harness@1.0.0` está no npm com tag
+`latest` — decisão explícita do mantenedor de pular a etapa de beta/RC que a spec
+original previa. `npx @ecodelearn/agent-harness --tool <claude|codex|gemini>
+--target . --dry-run` testado e funcionando contra o pacote real. Repositório
+tornado `PUBLIC` (era `PRIVATE`) após varredura `gitleaks` limpa no histórico
+completo. Skill `publish-pattern` genericizada: repo pessoal fixo
+`ecodelearn/claude-memories` substituído por `patterns_repo` opcional no
+`MEMORY.md` de cada projeto instalado. `defaultRef` dos providers (`claude.ts`,
+`codex.ts`, `antigravity.ts`) e o `adopt.sh` do `-open` (placeholder `[OWNER]`
+nunca preenchido) foram corrigidos antes do publish. Guia bilíngue novo
+`docs/{en,pt-BR}/alternatives.md` comparando `-open` vs `-ts`. Toda a
+documentação pública foi revisada para remover linguagem de "ainda não
+disponível" — ver PRs #4–#9.
+
 ## Integrações ativas
 
 Nenhuma. O instalador não deve ativar MCPs.
