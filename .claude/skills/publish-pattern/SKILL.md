@@ -74,7 +74,7 @@ Leia `.claude/memory/MEMORY.md` para confirmar `project`.
 
 ### Passo 3 — Editar o índice
 
-Abra `~/.claude/patterns-repo/global-index.md` (ou o arquivo de índice que o repositório do usuário realmente usar — confira o README dele se `global-index.md` não existir).
+Abra `~/.claude/patterns-repo/global-index.md` (ou o arquivo de índice que o repositório do usuário realmente usar — confira o README dele se `global-index.md` não existir). Anote o caminho real do arquivo editado — é o mesmo que vai para o commit no próximo passo.
 
 Adicione a entrada na seção de categoria correspondente. Se a categoria não existir, crie com `### [Categoria]`.
 
@@ -82,10 +82,12 @@ Atualize a data de "última atualização" no topo do arquivo.
 
 ### Passo 4 — Commit e push
 
+Use o caminho real do arquivo editado no Passo 3 (não assuma `global-index.md` se o repositório do usuário usar outro nome):
+
 ```bash
 cd ~/.claude/patterns-repo
-git add global-index.md
-git commit -m "docs(global-index): add [nome] from [project-slug]"
+git add <arquivo-de-índice-real>
+git commit -m "docs(patterns): add [nome] from [project-slug]"
 git push origin main
 ```
 
